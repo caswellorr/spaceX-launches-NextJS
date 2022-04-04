@@ -2,7 +2,12 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+
 export default function Home() {
+
+  console.log('launches', launches);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -13,12 +18,11 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          SpaceX Launches
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
+          Latest launches from SpaceX
         </p>
 
         <div className={styles.grid}>
@@ -66,4 +70,23 @@ export default function Home() {
       </footer>
     </div>
   )
+}
+
+export async function getStaticProps() {
+
+  const client = new ApolloClient({
+    uri: 'https://api.spacex.land/graphql/',
+    cache: new InMemoryCache()
+  });
+
+  await client.query({
+    query: gql `
+
+    `
+  })
+  return {
+    props: {
+      launches: []
+    }
+  }
 }
